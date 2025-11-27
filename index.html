@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>東京聖誕之旅</title>
+    <link rel="manifest" href="/manifest.json">
+    
+    <style>
+        /* 1. Vibe Coding: 基礎設置與配色 */
+        body {
+            font-family: 'Hiragino Sans', 'Noto Sans TC', sans-serif;
+            background-color: #FAFAFA; /* 暖白背景 */
+            margin: 0;
+            padding: 0;
+            color: #333333; /* 深灰文字 */
+        }
+        /* 頂部導航欄 (分頁切換) */
+        .tab-nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: #FFFFFF;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .tab-button {
+            border: none;
+            background: none;
+            padding: 10px 15px;
+            font-size: 1em;
+            cursor: pointer;
+            font-weight: 600;
+            color: #AAAAAA;
+            transition: color 0.3s;
+        }
+        .tab-button.active {
+            color: #008CBA; /* 主題藍 */
+            border-bottom: 3px solid #008CBA;
+        }
+
+        /* 2. Vibe Coding: 佈局與留白 */
+        .content {
+            padding: 20px;
+        }
+        .day-header {
+            margin-bottom: 25px;
+            padding-left: 5px;
+        }
+        .day-header h2 {
+            font-size: 1.5em;
+            color: #333;
+            margin: 0;
+        }
+
+        /* 3. Vibe Coding: 卡片設計 */
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 12px;
+            padding: 20px 24px; /* 充足的留白 */
+            margin-bottom: 32px; /* 拉開卡片間距 */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* 柔和陰影 */
+            line-height: 1.6;
+        }
+        
+        /* 4. 天氣 Placeholder */
+        .weather-info {
+            background-color: #E6F7FF; /* 淺藍色 */
+            color: #007bb5;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            /* 部署後需透過 JS 顯示 */
+        }
+        
+        /* 行程列表 */
+        .item-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .item-list li {
+            padding: 10px 0;
+            border-bottom: 1px dashed #F0F0F0; /* 柔和虛線 */
+            font-size: 0.95em;
+        }
+        .item-list li:last-child {
+            border-bottom: none;
+        }
+        .item-list .time {
+            font-weight: bold;
+            color: #555;
+            margin-right: 8px;
+            display: inline-block;
+            min-width: 60px; /* 確保時間對齊 */
+        }
+        .item-list ul {
+            padding-left: 15px;
+        }
+
+        /* 5. Vibe Coding: 標籤設計 */
+        .tag {
+            display: inline-block;
+            padding: 4px 8px;
+            margin: 3px 5px 3px 0;
+            border-radius: 5px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+        .tag-pass { background-color: #FFE0E6; color: #D83A56; } 
+        .tag-must-do { background-color: #E0F7E6; color: #4CAF50; } 
+        .tag-food { background-color: #FFF8E1; color: #FF9800; } 
+        .tag-reservation { background-color: #EDE7F6; color: #673AB7; } 
+        .tag-buy { background-color: #E0F7FA; color: #00BCD4; } 
+        .tag-story { background-color: #F3E5F5; color: #9C27B0; } 
+
+        /* 6. 導航按鈕 */
+        .nav-button {
+            display: block; 
+            text-align: center;
+            background-color: #008CBA;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.95em;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        
+        /* 記帳頁面樣式 */
+        .budget-input-group {
+            margin-bottom: 15px;
+        }
+        .budget-input-group input, .budget-input-group select {
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 5px;
+        }
+        .delete-btn {
+            color: red; 
+            cursor: pointer; 
+            float: right;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="tab-nav">
+        <button id="tab-schedule-btn" class="tab-button active" onclick="showTab('schedule', this)">日程概覽</button>
+        <button id="tab-info-btn" class="tab-button" onclick="showTab('info', this)">旅程資訊</button>
+        <button id="tab-budget-btn" class="tab-button" onclick="showTab('budget', this)">記帳/預算</button>
+    </div>
+
+    <div id="schedule" class="content">
+
+        <header class="day-header">
+            <h2>🗓️ 12 月 8 日（週一）</h2>
+            <p>高雄出發，抵達迪士尼樂園</p>
+        </header>
+        
+        <div class="card weather-info">
+            ☀️ 氣溫: [API] | 天氣: [API] (即時資訊 Placeholder)
+        </div>
+
+        <div class="card">
+            <h3>✈️ 航班與交通</h3>
+            <ul class="item-list">
+                <li><span class="time">08:00</span> ✈️ 高雄 (KHH) 起飛 ➡️ 東京 (NRT) <span class="tag tag-reservation">KLOOK先定利木津</span></li>
+                <li><span class="time">12:20</span> 抵達成田機場（航廈 2）</li>
+                <li>
+                    <span class="time">利木津巴士</span> (NRT T2 ➡️ Fantasy Springs Hotel)
+                    <br>
+                    建議班次：<span class="tag tag-reservation">13:35 出發</span> ➡️ <span class="tag tag-reservation">14:58 抵達</span>
+                    <a href="http://googleusercontent.com/maps.google.com/search?q=Tokyo+DisneySea+Fantasy+Springs+Hotel" class="nav-button">
+                        🗺️ 導航至迪士尼飯店
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>🏰 東京迪士尼樂園</h3>
+            <ul class="item-list">
+                <li><span class="time">17:00</span> **美女與野獸** (預約項目) <span class="tag tag-reservation">需預約</span></li>
+                <li>
+                    **必玩/快速通關**
+                    <br>
+                    <span class="tag tag-pass">巨雷山</span>
+                    <span class="tag tag-pass">幽靈公館</span>
+                    <span class="tag tag-must-do">小小世界</span> <span class="tag tag-must-do">杯麵</span>
+                </li>
+                <li>
+                    **必吃美食**
+                    <br>
+                    <span class="tag tag-food">水晶宮 (吃到飽)</span>
+                    <span class="tag tag-food">中央大道咖啡餐館 (杯麵咖哩飯)</span>
+                    <a href="http://googleusercontent.com/maps.google.com/search?q=Tokyo+Disneyland" class="nav-button">
+                        🗺️ 導航至迪士尼樂園
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <header class="day-header">
+            <h2>🗓️ 12 月 9 日（週二）</h2>
+            <p>迪士尼海洋與東京市區</p>
+        </header>
+        <div class="card">
+            <h3>🔱 東京迪士尼海洋 - 夢幻泉鄉</h3>
+            <span class="tag tag-story">攻略: 夢幻泉鄉為最新園區，必玩 Peter Pan, Elsa, Rapunzel 設施！</span>
+            <ul class="item-list">
+                <li><span class="time">08:20</span> 早餐預約</li>
+                <li><span class="time">12:00</span> 飯店退房</li>
+                <li><span class="time">必玩</span> <span class="tag tag-must-do">玩具總動員</span> <span class="tag tag-must-do">驚魂古塔</span> <span class="tag tag-must-do">地心探險</span></li>
+            </ul>
+            <a href="http://googleusercontent.com/maps.google.com/search?q=Tokyo+DisneySea" class="nav-button">
+                🗺️ 導航至迪士尼海洋
+            </a>
+        </div>
+        
+        <header class="day-header">
+            <h2>🗓️ 12 月 10 日（週三）</h2>
+            <p>吉伊卡哇與聖誕市集
