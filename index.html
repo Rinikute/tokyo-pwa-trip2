@@ -3,229 +3,599 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>東京聖誕之旅</title>
+    <title>東京聖誕之旅 2025</title>
     <link rel="manifest" href="/manifest.json">
     
     <style>
-        /* 1. Vibe Coding: 基礎設置與配色 */
+        /* 1. 基礎設置與奶油暖白配色 */
         body {
-            font-family: 'Hiragino Sans', 'Noto Sans TC', sans-serif;
-            background-color: #FAFAFA; /* 暖白背景 */
+            font-family: 'Avenir Next', 'Hiragino Sans', 'Noto Sans TC', sans-serif;
+            background-color: #FFFCF9; 
             margin: 0;
             padding: 0;
-            color: #333333; /* 深灰文字 */
+            color: #333333; 
         }
-        /* 頂部導航欄 (分頁切換) */
+        /* 頂部導航欄 */
         .tab-nav {
             display: flex;
-            justify-content: space-around;
+            overflow-x: auto; 
+            white-space: nowrap; 
             background-color: #FFFFFF;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03); 
             padding: 10px 0;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 200; 
+            justify-content: space-around; 
         }
         .tab-button {
             border: none;
             background: none;
-            padding: 10px 15px;
+            padding: 10px 20px;
             font-size: 1em;
             cursor: pointer;
             font-weight: 600;
+            flex-shrink: 0;
             color: #AAAAAA;
             transition: color 0.3s;
         }
         .tab-button.active {
-            color: #008CBA; /* 主題藍 */
-            border-bottom: 3px solid #008CBA;
+            color: #C48E44; /* 米黃色系強調色 */
+            border-bottom: 3px solid #C48E44;
         }
 
-        /* 2. Vibe Coding: 佈局與留白 */
-        .content {
-            padding: 20px;
-        }
-        .day-header {
-            margin-bottom: 25px;
-            padding-left: 5px;
-        }
-        .day-header h2 {
-            font-size: 1.5em;
-            color: #333;
-            margin: 0;
-        }
-
-        /* 3. Vibe Coding: 卡片設計 */
-        .card {
-            background-color: #FFFFFF;
-            border-radius: 12px;
-            padding: 20px 24px; /* 充足的留白 */
-            margin-bottom: 32px; /* 拉開卡片間距 */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* 柔和陰影 */
-            line-height: 1.6;
-        }
+        /* 2. 佈局與卡片設計 */
+        .content { padding: 10px 0; }
         
-        /* 4. 天氣 Placeholder */
-        .weather-info {
-            background-color: #E6F7FF; /* 淺藍色 */
-            color: #007bb5;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            font-size: 0.9em;
-            /* 部署後需透過 JS 顯示 */
-        }
+        /* Hero Header */
+        .hero-header { position: relative; width: 100%; overflow: hidden; margin-bottom: -40px; }
+        .hero-header img { width: 100%; height: auto; object-fit: contain; filter: brightness(0.9); display: block; }
+        .hero-header::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0)); z-index: 1; }
+        .hero-content { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 20px; box-sizing: border-box; z-index: 2; }
         
-        /* 行程列表 */
-        .item-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .item-list li {
-            padding: 10px 0;
-            border-bottom: 1px dashed #F0F0F0; /* 柔和虛線 */
-            font-size: 0.95em;
-        }
-        .item-list li:last-child {
-            border-bottom: none;
-        }
-        .item-list .time {
-            font-weight: bold;
-            color: #555;
-            margin-right: 8px;
-            display: inline-block;
-            min-width: 60px; /* 確保時間對齊 */
-        }
-        .item-list ul {
-            padding-left: 15px;
-        }
-
-        /* 5. Vibe Coding: 標籤設計 */
-        .tag {
-            display: inline-block;
-            padding: 4px 8px;
-            margin: 3px 5px 3px 0;
-            border-radius: 5px;
-            font-size: 0.75em;
-            font-weight: bold;
-        }
-        .tag-pass { background-color: #FFE0E6; color: #D83A56; } 
-        .tag-must-do { background-color: #E0F7E6; color: #4CAF50; } 
-        .tag-food { background-color: #FFF8E1; color: #FF9800; } 
-        .tag-reservation { background-color: #EDE7F6; color: #673AB7; } 
-        .tag-buy { background-color: #E0F7FA; color: #00BCD4; } 
-        .tag-story { background-color: #F3E5F5; color: #9C27B0; } 
-
-        /* 6. 導航按鈕 */
-        .nav-button {
-            display: block; 
-            text-align: center;
-            background-color: #008CBA;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 0.95em;
-            margin-top: 15px;
-            transition: background-color 0.3s;
-        }
+        /* 日本時間時鐘 */
+        .hero-time-group { position: absolute; top: 15px; left: 20px; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+        .hero-time-label { color: #EEE; font-size: 0.7em; font-weight: 600; letter-spacing: 1px; display: block; margin-bottom: -5px; }
+        .hero-time-display { font-size: 2.8em; font-weight: 700; line-height: 1; color: white; display: inline-block;}
         
-        /* 記帳頁面樣式 */
-        .budget-input-group {
-            margin-bottom: 15px;
-        }
-        .budget-input-group input, .budget-input-group select {
-            padding: 8px;
-            width: 100%;
-            box-sizing: border-box;
-            margin-top: 5px;
-        }
+        .hero-date-text { font-size: 0.9em; position: absolute; top: 70px; left: 20px; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.5); letter-spacing: 1px; }
+        .countdown-display { position: absolute; top: 20px; right: 20px; color: white; font-size: 0.9em; font-weight: 600; background: rgba(0, 0, 0, 0.4); padding: 5px 10px; border-radius: 5px; letter-spacing: 1px; text-shadow: none; }
+        
+        /* 日期條 */
+        .calendar-strip { display: flex; overflow-x: auto; white-space: nowrap; margin: 0 20px; padding: 15px 0; background-color: transparent; position: relative; z-index: 10; }
+        .day-tab-box { background-color: white; color: #333; border: 1px solid #EAEAEA; border-radius: 8px; padding: 8px 5px; margin-right: 12px; text-align: center; width: 60px; min-width: 60px; cursor: pointer; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08); transition: all 0.2s; }
+        .day-tab-box.active { background: #FFF8E0; border-color: #C48E44; color: #C48E44; transform: scale(1.02); }
+        .day-tab-box .month-text { font-size: 0.7em; display: block; color: #888; margin-bottom: 2px; }
+        .day-tab-box.active .month-text { color: #C48E44; }
+        .day-tab-box .date-num { display: block; font-size: 1.4em; font-weight: 800; line-height: 1; margin-bottom: 2px; }
+        .day-tab-box .day-text { font-size: 0.75em; display: block; font-weight: 600; }
+        
+        .day-title { margin: 0 20px 15px 20px; font-size: 1.8em; font-weight: bold; color: #444; letter-spacing: 2px; }
+        .card { background-color: #FFFFFF; border-radius: 12px; padding: 20px 24px; margin: 0 20px 25px 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03); border: 1px solid #E8E8E8; line-height: 1.6; }
+        
+        /* 元件樣式 */
+        .flight-card { background-color: #7B6858; color: white; border-radius: 12px; padding: 20px; margin: 0 20px 25px 20px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); }
+        .flight-header { display: flex; justify-content: space-between; align-items: center; }
+        .flight-time, .flight-airport { font-size: 2em; font-weight: 700; line-height: 1; margin-bottom: 5px; }
+        .flight-details { text-align: center; margin-top: 10px; font-weight: 500; }
+        .flight-reminder { background: rgba(255, 255, 255, 0.2); color: white; padding: 5px 10px; border-radius: 6px; margin-top: 15px; display: inline-block; font-size: 0.9em; }
+        .map-container { margin: 0 20px 20px 20px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); }
+        .map-container iframe { width: 100%; height: 250px; border: none; display: block; }
+        .location-link { display: block; margin: 15px 0; text-decoration: none; font-weight: bold; color: #C48E44; font-size: 1.1em; padding: 10px 15px; background-color: #FFF8E0; border-radius: 8px; border: 1px solid #E8E8E8; text-align: center; transition: background-color 0.3s; }
+        
+        /* 標籤 */
+        .tag { display: inline-block; padding: 4px 10px; margin: 3px 5px 3px 0; border-radius: 6px; font-size: 0.75em; font-weight: bold; }
+        .tag-pass { background-color: #F4E8D4; color: #7B6858; } 
+        .tag-must-do { background-color: #E6F3E6; color: #4CAF50; }
+        .tag-food { background-color: #FFF0D6; color: #C48E44; } 
+        .tag-reservation { background-color: #E0EBF7; color: #4C70A8; } 
+        .tag-xmas { background-color: #EFE6DA; color: #6A5B4C; }
+        .tag-buy { background-color: #F7E6E8; color: #8D545B; }
+        .action-button { background-color: #C48E44; color: #FFFFFF; padding: 10px 15px; border-radius: 6px; transition: background-color 0.3s; border: none; font-weight: bold; }
+        .action-button.green { background-color: #79A37B; color: #FFFFFF; }
+        .weather-info { padding: 0; margin-bottom: 15px; border: none; box-shadow: none; background-color: transparent; }
+        .weatherwidget-io { width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid #E8E8E8; }
+
+        .item-list { list-style: none; padding: 0; margin: 0; }
+        .item-list li { padding: 10px 0; border-bottom: 1px dashed #E5E5E5; font-size: 0.95em; position: relative;}
+        .item-list li:last-child { border-bottom: none; }
+        .item-list .time { font-weight: bold; color: #555; margin-right: 8px; }
+        
+        /* 記帳樣式 */
+        .budget-input-group { margin-bottom: 15px; }
+        .budget-input-group input { padding: 10px; border-radius: 6px; border: 1px solid #E8E8E8; width: 100%; box-sizing: border-box; margin-top: 5px; }
+        .budget-input-group .action-button { width: auto; display: inline-block; padding: 5px 10px; margin-top: 5px; }
+        .budget-input-group input[type="number"]#exchangeRate { width: 80px; display: inline-block; }
+        
+        /* 刪除按鈕 */
         .delete-btn {
-            color: red; 
-            cursor: pointer; 
-            float: right;
+            position: absolute;
+            right: 0;
+            top: 10px;
+            color: #D83A56;
+            cursor: pointer;
             font-weight: bold;
-            margin-left: 10px;
+            padding: 0 10px;
+            background: #FFF0F0;
+            border-radius: 4px;
+            font-size: 0.8em;
         }
+        
+        /* Checkbox */
+        .task-list { list-style: none; padding: 0; margin: 0; }
+        .task-list li { padding: 10px 0; border-bottom: 1px dashed #E5E5E5; display: flex; align-items: center; }
+        .task-list input[type="checkbox"] { margin-right: 15px; min-width: 20px; min-height: 20px; accent-color: #7B6858; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="tab-nav">
-        <button id="tab-schedule-btn" class="tab-button active" onclick="showTab('schedule', this)">日程概覽</button>
-        <button id="tab-info-btn" class="tab-button" onclick="showTab('info', this)">旅程資訊</button>
-        <button id="tab-budget-btn" class="tab-button" onclick="showTab('budget', this)">記帳/預算</button>
+        <button id="tab-home-btn" class="tab-button active" onclick="showItinerary()">行程</button>
+        <button id="tab-info-btn" class="tab-button" onclick="showTab('info', this)">資訊</button>
+        <button id="tab-budget-btn" class="tab-button" onclick="showTab('budget', this)">記帳</button>
     </div>
 
-    <div id="schedule" class="content">
-
-        <header class="day-header">
-            <h2>🗓️ 12 月 8 日（週一）</h2>
-            <p>高雄出發，抵達迪士尼樂園</p>
-        </header>
-        
-        <div class="card weather-info">
-            ☀️ 氣溫: [API] | 天氣: [API] (即時資訊 Placeholder)
+    <div class="hero-header">
+        <img src="/images/day01_arrival.jpg" alt="背景圖片" class="hero-background" id="hero-img-bg"> 
+        <div class="hero-content">
+            <div class="hero-time-group">
+                <span class="hero-time-label">TOKYO TIME</span>
+                <div class="hero-time-display" id="hero-time-display">--:--</div>
+            </div>
+            <div class="hero-date-text" id="hero-date-text-display">2025.12.06 FRI</div>
+            <div class="countdown-display" id="countdown-timer">計算中...</div>
         </div>
+    </div>
+    
+    <div class="calendar-strip">
+        <div class="day-tab-box active" data-day-index="1" onclick="showDay('day-12-6', 1, this)"><span class="month-text">12月</span><span class="date-num">6</span><span class="day-text">FRI</span></div>
+        <div class="day-tab-box" data-day-index="2" onclick="showDay('day-12-7', 2, this)"><span class="month-text">12月</span><span class="date-num">7</span><span class="day-text">SAT</span></div>
+        <div class="day-tab-box" data-day-index="3" onclick="showDay('day-12-8', 3, this)"><span class="month-text">12月</span><span class="date-num">8</span><span class="day-text">SUN</span></div>
+        <div class="day-tab-box" data-day-index="4" onclick="showDay('day-12-9', 4, this)"><span class="month-text">12月</span><span class="date-num">9</span><span class="day-text">MON</span></div>
+        <div class="day-tab-box" data-day-index="5" onclick="showDay('day-12-10', 5, this)"><span class="month-text">12月</span><span class="date-num">10</span><span class="day-text">TUE</span></div>
+        <div class="day-tab-box" data-day-index="6" onclick="showDay('day-12-11', 6, this)"><span class="month-text">12月</span><span class="date-num">11</span><span class="day-text">WED</span></div>
+        <div class="day-tab-box" data-day-index="7" onclick="showDay('day-12-12', 7, this)"><span class="month-text">12月</span><span class="date-num">12</span><span class="day-text">THU</span></div>
+    </div>
+    
+    <div class="content-wrapper">
 
-        <div class="card">
-            <h3>✈️ 航班與交通</h3>
-            <ul class="item-list">
-                <li><span class="time">08:00</span> ✈️ 高雄 (KHH) 起飛 ➡️ 東京 (NRT) <span class="tag tag-reservation">KLOOK先定利木津</span></li>
-                <li><span class="time">12:20</span> 抵達成田機場（航廈 2）</li>
-                <li>
-                    <span class="time">利木津巴士</span> (NRT T2 ➡️ Fantasy Springs Hotel)
-                    <br>
-                    建議班次：<span class="tag tag-reservation">13:35 出發</span> ➡️ <span class="tag tag-reservation">14:58 抵達</span>
-                    <a href="http://googleusercontent.com/maps.google.com/search?q=Tokyo+DisneySea+Fantasy+Springs+Hotel" class="nav-button">
-                        🗺️ 導航至迪士尼飯店
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="card">
-            <h3>🏰 東京迪士尼樂園</h3>
-            <ul class="item-list">
-                <li><span class="time">17:00</span> **美女與野獸** (預約項目) <span class="tag tag-reservation">需預約</span></li>
-                <li>
-                    **必玩/快速通關**
-                    <br>
-                    <span class="tag tag-pass">巨雷山</span>
-                    <span class="tag tag-pass">幽靈公館</span>
-                    <span class="tag tag-must-do">小小世界</span> <span class="tag tag-must-do">杯麵</span>
-                </li>
-                <li>
-                    **必吃美食**
-                    <br>
-                    <span class="tag tag-food">水晶宮 (吃到飽)</span>
-                    <span class="tag tag-food">中央大道咖啡餐館 (杯麵咖哩飯)</span>
-                    <a href="http://googleusercontent.com/maps.google.com/search?q=Tokyo+Disneyland" class="nav-button">
-                        🗺️ 導航至迪士尼樂園
-                    </a>
-                </li>
-            </ul>
+        <div id="day-12-6" class="content">
+            <div class="day-title">第一天：抵達東京</div>
+            <div class="flight-card"><div class="flight-header"><div><span class="flight-time">08:00</span><p class="flight-airport" style="font-size: 0.6em;">TPE</p></div><div><span class="flight-time">12:20</span><p class="flight-airport" style="font-size: 0.6em;">NRT</p></div></div><div class="flight-details"><span class="flight-number">CI 0102</span></div></div>
+            <div class="map-container">
+                <iframe src="https://maps.google.com/maps?q=A-PIT+Autobacs+Shinonome&t=&z=13&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
+            </div>
+            <div class="card"><h3>✈️ 交通與住宿</h3><ul class="item-list"><li>搭乘 SKYLINER (12:42/13:02)</li><li>Check-in Comfort Hotel Tokyo Kanda (12/6 - 12/8)</li></ul></div>
+            <div class="card"><h3>🚗 下午活動</h3><a href="https://www.google.com/maps/search/?api=1&query=A-PIT+AUTOBACS+SHINONOME" target="_blank" class="location-link">📍 東雲 A pit</a></div>
+            <div class="card"><h3>🍽️ 晚餐預約</h3><a href="https://www.google.com/maps/search/?api=1&query=Nikuya+Yokocho+Akihabara" target="_blank" class="location-link">📍 肉屋橫丁 秋葉原</a><ul class="item-list"><li>20:00 預約 <span class="tag tag-reservation">重要</span></li></ul></div>
+            <div class="weather-info"><a class="weatherwidget-io" href="https://forecast7.com/zh-tw/35d69139d69/tokyo/" data-label_1="TOKYO" data-theme="original" >TOKYO WEATHER</a></div>
         </div>
         
-        <header class="day-header">
-            <h2>🗓️ 12 月 9 日（週二）</h2>
-            <p>迪士尼海洋與東京市區</p>
-        </header>
-        <div class="card">
-            <h3>🔱 東京迪士尼海洋 - 夢幻泉鄉</h3>
-            <span class="tag tag-story">攻略: 夢幻泉鄉為最新園區，必玩 Peter Pan, Elsa, Rapunzel 設施！</span>
-            <ul class="item-list">
-                <li><span class="time">08:20</span> 早餐預約</li>
-                <li><span class="time">12:00</span> 飯店退房</li>
-                <li><span class="time">必玩</span> <span class="tag tag-must-do">玩具總動員</span> <span class="tag tag-must-do">驚魂古塔</span> <span class="tag tag-must-do">地心探險</span></li>
-            </ul>
-            <a href="http://googleusercontent.com/maps.google.com/search?q=Tokyo+DisneySea" class="nav-button">
-                🗺️ 導航至迪士尼海洋
-            </a>
+        <div id="day-12-7" class="content" style="display:none;">
+            <div class="day-title">第二天：川越與地瓜哇</div>
+            <img src="/images/day02_kawagoe.jpg" alt="川越" class="hero-background" style="width:100%; border-radius:10px; margin-bottom:15px;">
+            <div class="map-container">
+                <iframe src="https://maps.google.com/maps?q=Kawagoe+Hikawa+Shrine&t=&z=13&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
+            </div>
+            <div class="card">
+                <h3>🎄 戶外活動</h3>
+                <a href="https://www.google.com/maps/search/?api=1&query=Ueno+Park" target="_blank" class="location-link">📍 上野聖誕市集</a>
+                <ul class="item-list">
+                    <li>川越半日遊</li>
+                    <li><span class="tag tag-xmas">聖誕市集</span> 東京聖誕 Advent</li>
+                    <li>晴空塔聖誕市集</li>
+                </ul>
+            </div>
+            <div class="card"><h3>🍽️ 晚餐預約</h3><a href="https://www.google.com/maps/search/?api=1&query=Yakiniku+Yacchan+Kanda" target="_blank" class="location-link">📍 焼肉やっちゃん 神田店</a><ul class="item-list"><li>21:30 預約</li></ul></div>
+            <div class="weather-info"><a class="weatherwidget-io" href="https://forecast7.com/zh-tw/35d69139d69/tokyo/" data-label_1="TOKYO" data-theme="original" >TOKYO WEATHER</a></div>
         </div>
         
-        <header class="day-header">
-            <h2>🗓️ 12 月 10 日（週三）</h2>
-            <p>吉伊卡哇與聖誕市集
+        <div id="day-12-8" class="content" style="display:none;">
+            <div class="day-title">第三天：嬰兒士尼</div>
+            <img src="/images/day03_disney_land.jpg" alt="迪士尼" class="hero-background" style="width:100%; border-radius:10px; margin-bottom:15px;">
+            <div class="map-container">
+                <iframe src="https://maps.google.com/maps?q=Tokyo+Disneyland&t=&z=13&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
+            </div>
+            <div class="card">
+                <h3>🏰 迪士尼樂園</h3>
+                <a href="https://www.google.com/maps/search/?api=1&query=Tokyo+Disneyland" target="_blank" class="location-link">📍 東京迪士尼樂園</a>
+                <ul class="item-list">
+                    <li><span class="time">09:00</span> アリエス 新宿東南口店 <span class="tag tag-reservation">預約</span></li>
+                    <li><span class="time">17:00</span> 美女與野獸 <span class="tag tag-reservation">DPA已買</span></li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🎢 必玩與美食</h3>
+                <ul class="item-list">
+                    <li>快速通關：<span class="tag tag-pass">巨雷山</span>、<span class="tag tag-pass">幽靈公關</span></li>
+                    <li>必玩：<span class="tag tag-must-do">小小世界</span>、<span class="tag tag-must-do">杯麵</span>、<span class="tag tag-must-do">白雪公主</span></li>
+                    <li>遊行：<span class="time">12:45</span> 聖誕遊行 / <span class="time">19:00</span> 夢之光</li>
+                    <li>美食：<span class="tag tag-food">水晶宮 (吃到飽)</span>、<span class="tag tag-food">中央大道咖啡廳</span></li>
+                </ul>
+            </div>
+            <div class="weather-info"><a class="weatherwidget-io" href="https://forecast7.com/zh-tw/35d69139d69/tokyo/" data-label_1="TOKYO" data-theme="original" >TOKYO WEATHER</a></div>
+        </div>
+
+        <div id="day-12-9" class="content" style="display:none;">
+            <div class="day-title">第四天：嬰兒士尼海洋</div>
+            <img src="/images/day04_disney_sea.jpg" alt="海洋" class="hero-background" style="width:100%; border-radius:10px; margin-bottom:15px;">
+            <div class="map-container">
+                <iframe src="https://maps.google.com/maps?q=Tokyo+DisneySea&t=&z=13&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
+            </div>
+            <div class="card">
+                <h3>🔱 迪士尼海洋 (夢幻泉鄉)</h3>
+                <a href="https://www.google.com/maps/search/?api=1&query=Tokyo+DisneySea" target="_blank" class="location-link">📍 東京迪士尼海洋</a>
+                <ul class="item-list">
+                    <li><span class="time">08:20</span> 早餐預約</li>
+                    <li>預約設施：<span class="time">10:00</span> Elsa、<span class="time">11:30</span> 樂佩、<span class="time">13:30</span> 彼得潘</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🎢 必玩與美食</h3>
+                <ul class="item-list">
+                    <li>必玩：<span class="tag tag-pass">玩具總動員</span>、<span class="tag tag-pass">驚魂古塔</span>、<span class="tag tag-pass">地心探險</span></li>
+                    <li>表演：<span class="time">14:15</span> 聖誕迎賓會 / <span class="time">15:25</span> 達菲旅程</li>
+                    <li>住宿：Check-in REMM PLUS GINZA</li>
+                </ul>
+            </div>
+            <div class="weather-info"><a class="weatherwidget-io" href="https://forecast7.com/zh-tw/35d69139d69/tokyo/" data-label_1="TOKYO" data-theme="original" >TOKYO WEATHER</a></div>
+        </div>
+
+        <div id="day-12-10" class="content" style="display:none;">
+            <div class="day-title">第五天：嘎哇樂園</div>
+            <img src="/images/day05_chiikawa.jpg" alt="吉伊卡哇" class="hero-background" style="width:100%; border-radius:10px; margin-bottom:15px;">
+            <div class="map-container">
+                <iframe src="https://maps.google.com/maps?q=Harajuku+Takeshita+Street&t=&z=14&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
+            </div>
+            <div class="card">
+                <h3>🛍️ 購物與美食</h3>
+                <a href="https://www.google.com/maps/search/?api=1&query=Chiikawa+Land+Harajuku" target="_blank" class="location-link">📍 吉伊卡哇樂園</a>
+                <ul class="item-list">
+                    <li><span class="time">午餐</span> ねぎし Negish池袋東口店 <span class="tag tag-food">牛舌</span></li>
+                    <li><span class="time">13:40</span> 吉伊卡哇樂園 (入場)</li>
+                    <li><span class="time">下午</span> 原宿逛街</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🎄 聖誕夜景</h3>
+                <a href="https://www.google.com/maps/search/?api=1&query=Meiji+Jingu+Gaien" target="_blank" class="location-link">📍 明治神宮外苑</a>
+                <ul class="item-list">
+                    <li><span class="tag tag-xmas">聖誕市集</span> 明治神宮外苑</li>
+                    <li><span class="tag tag-xmas">可選</span> 芝公園</li>
+                </ul>
+            </div>
+            <div class="weather-info"><a class="weatherwidget-io" href="https://forecast7.com/zh-tw/35d69139d69/tokyo/" data-theme="original" >TOKYO WEATHER</a></div>
+        </div>
+        
+        <div id="day-12-11" class="content" style="display:none;">
+            <div class="day-title">第六天：六本木貢丸之內</div>
+            <img src="/images/day06_roppongi.jpg" alt="六本木" class="hero-background" style="width:100%; border-radius:10px; margin-bottom:15px;">
+            <div class="map-container">
+                <iframe src="https://maps.google.com/maps?q=Roppongi+Hills&t=&z=14&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
+            </div>
+            <div class="card">
+                <h3>🗼 市區活動</h3>
+                <a href="https://www.google.com/maps/search/?api=1&query=Roppongi+Hills" target="_blank" class="location-link">📍 六本木新城 & 麻布台hills</a>
+                <ul class="item-list">
+                    <li><span class="time">早餐</span> Tricolore coffee <span class="tag tag-food">咖啡</span></li>
+                    <li><span class="time">上午</span> BINGO Sports <span class="tag tag-buy">看車</span></li>
+                    <li><span class="time">中午</span> 六本木新城 & 麻布台hills</li>
+                    <li><span class="time">晚上</span> 丸之內street park</li>
+                </ul>
+            </div>
+            <div class="weather-info"><a class="weatherwidget-io" href="https://forecast7.com/zh-tw/35d69139d69/tokyo/" data-theme="original" >TOKYO WEATHER</a></div>
+        </div>
+
+        <div id="day-12-12" class="content" style="display:none;">
+            <div class="day-title">第七天：返程日</div>
+            <div class="flight-card"><div class="flight-header"><div><span class="flight-time">14:20</span><p class="flight-airport">NRT</p></div><div><span class="flight-time">18:40</span><p class="flight-airport">TPE</p></div></div><div class="flight-details"><span class="flight-number">CI 0127</span></div></div>
+            <img src="/images/day07_departure.jpg" alt="返程" class="hero-background" style="width:100%; border-radius:10px; margin-bottom:15px;">
+            <div class="map-container">
+                <iframe src="https://maps.google.com/maps?q=Narita+International+Airport&t=&z=12&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
+            </div>
+            <div class="card">
+                <h3>✈️ 返程與購物</h3>
+                <a href="https://www.google.com/maps/search/?api=1&query=Narita+International+Airport" target="_blank" class="location-link">📍 成田機場</a>
+                <ul class="item-list">
+                    <li><span class="time">上午</span> Check-out 飯店</li>
+                    <li><span class="time">交通</span> SKYLINER (14:20/14:37)</li>
+                </ul>
+            </div>
+            <div class="weather-info"><a class="weatherwidget-io" href="https://forecast7.com/zh-tw/35d69139d69/tokyo/" data-theme="original" >TOKYO WEATHER</a></div>
+        </div>
+
+
+        <div id="info" class="content" style="display:none;">
+            <div class="day-title">📝 旅程資訊總覽</div>
+            <div class="card"><h3>🗓️ 重要預約</h3><ul class="item-list"><li>12/6 20:00 肉屋橫丁 秋葉原</li><li>12/7 21:30 焼肉やっちゃん 神田店</li><li>12/8 09:00 アリエス 新宿東南口店</li><li>12/8 17:00 美女與野獸</li><li>12/10 13:40 吉伊卡哇樂園</li></ul></div>
+            <div class="card">
+                <h3>✅ 任務/打包清單</h3>
+                <ul class="task-list">
+                    <li><input type="checkbox" id="t1"><label for="t1">護照、簽證</label></li>
+                    <li><input type="checkbox" id="t2"><label for="t2">ESIM / 網卡</label></li>
+                    <li><input type="checkbox" id="t3"><label for="t3">日幣現金</label></li>
+                    <li><input type="checkbox" id="t4"><label for="t4">SKYLINER 車票</label></li>
+                    <li><input type="checkbox" id="t5"><label for="t5">聖誕市集門票</label></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="budget" class="content" style="display:none;">
+            <div class="day-title">💰 記帳中心 (雲端版)</div>
+            
+            <div class="card" style="background-color: #FFF0E6; border: 1px solid #D4A373;">
+                <h3>📊 預算概覽</h3>
+                <div class="budget-input-group">
+                    <label>總預算 (TWD):</label>
+                    <input type="number" id="totalBudgetTWD" value="0" placeholder="設定台幣總預算">
+                    <button onclick="saveSettings()" class="action-button" style="background-color:#D4A373; color:white; margin-top: 5px;">儲存設定</button>
+                </div>
+                <p style="margin-top: 15px;">
+                    總預算: <strong id="budget-twd-display" style="color:#D4A373;">NT$ 0</strong><br>
+                    已支出: <strong id="total-spent-twd" style="color:#D83A56;">讀取中...</strong><br>
+                    剩餘: <strong id="remaining-twd" style="color:#79A37B;">讀取中...</strong>
+                </p>
+                <hr style="border-top:1px dashed #ccc;">
+                <p>
+                    匯率: <input type="number" id="exchangeRate" value="0.215" step="0.001" style="width:60px;"> 
+                    (日幣總支: <span id="total-spent-jpy">...</span>)
+                </p>
+            </div>
+            
+            <div class="card">
+                <h3>➕ 新增支出</h3>
+                <div class="budget-input-group">
+                    <label>使用者:</label>
+                    <input type="text" id="expenseUser" placeholder="例如：哇" list="user-options">
+                    <datalist id="user-options"><option value="哇"></option><option value="書"></option></datalist>
+                </div>
+                <div class="budget-input-group">
+                    <input type="text" id="expenseDesc" placeholder="項目">
+                </div>
+                <div class="budget-input-group">
+                    <input type="number" id="expenseAmount" placeholder="金額 (JPY)">
+                </div>
+                <button onclick="handleExpense('add')" class="action-button green" id="add-btn" style="margin-top: 5px;">記錄支出</button>
+            </div>
+
+            <div class="card">
+                <h3>🧾 支出明細 (可刪除)</h3>
+                <ul id="expenseList" class="item-list"><li>載入中...</li></ul>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // === 🔴 Google Apps Script 網址 (已自動填入) ===
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQ9JTsKgQIs22NzJjLxQseBD2YFWwE9xGJmYRMWgyVv5d8nci1JUazXnvhIB9bkdY-yw/exec';
+
+        // === 狀態記憶與導航 ===
+        let currentDayId = 'day-12-6';
+        let currentDayIndex = 1;
+
+        function showDay(tabId, dayIndex, clickedButton) {
+            currentDayId = tabId; currentDayIndex = dayIndex;
+            hideAll();
+            document.getElementById(tabId).style.display = 'block';
+            showHero(true);
+            updateNav('tab-home-btn');
+            if(clickedButton) updateStrip(clickedButton);
+            else document.querySelector(`.day-tab-box[data-day-index="${dayIndex}"]`).classList.add('active');
+            updateHeroContent(dayIndex);
+        }
+
+        function showTab(tabId, clickedButton) {
+            hideAll();
+            document.getElementById(tabId).style.display = 'block';
+            showHero(false);
+            updateNav(clickedButton.id);
+        }
+
+        function showItinerary() { showDay(currentDayId, currentDayIndex, null); }
+
+        function hideAll() {
+            const ids = ['day-12-6', 'day-12-7', 'day-12-8', 'day-12-9', 'day-12-10', 'day-12-11', 'day-12-12', 'info', 'budget'];
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.style.display = 'none';
+            });
+        }
+        function showHero(show) {
+            document.querySelector('.hero-header').style.display = show ? 'block' : 'none';
+            document.querySelector('.calendar-strip').style.display = show ? 'flex' : 'none';
+        }
+        function updateNav(activeId) {
+            document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+            document.getElementById(activeId).classList.add('active');
+        }
+        function updateStrip(btn) {
+            document.querySelectorAll('.day-tab-box').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        // === Hero Data & Clock ===
+        const DATE_MAP = {
+            1: { src: '/images/day01_arrival.jpg', fullDate: '2025.12.06 FRI', departureTime: '2025-12-06T08:00:00' },
+            2: { src: '/images/day02_kawagoe.jpg', fullDate: '2025.12.07 SAT', departureTime: '2025-12-07T09:00:00' },
+            3: { src: '/images/day03_disney_land.jpg', fullDate: '2025.12.08 SUN', departureTime: '2025-12-08T08:00:00' },
+            4: { src: '/images/day04_disney_sea.jpg', fullDate: '2025.12.09 MON', departureTime: '2025-12-09T08:20:00' },
+            5: { src: '/images/day05_chiikawa.jpg', fullDate: '2025.12.10 TUE', departureTime: '2025-12-10T09:00:00' },
+            6: { src: '/images/day06_roppongi.jpg', fullDate: '2025.12.11 WED', departureTime: '2025-12-11T08:00:00' },
+            7: { src: '/images/day07_departure.jpg', fullDate: '2025.12.12 THU', departureTime: '2025-12-12T14:20:00' }
+        };
+        
+        function updateHeroContent(idx) {
+            const d = DATE_MAP[idx];
+            if(d) {
+                document.getElementById('hero-img-bg').src = d.src;
+                // 時間不再靜態更新，而是由時鐘控制
+                document.getElementById('hero-date-text-display').textContent = d.fullDate;
+                document.getElementById('countdown-timer').dataset.targetTime = d.departureTime;
+                updateCountdown();
+            }
+        }
+        
+        function updateJapanClock() {
+            const options = { timeZone: 'Asia/Tokyo', hour: '2-digit', minute: '2-digit', hour12: false };
+            const timeString = new Date().toLocaleTimeString('en-US', options);
+            document.getElementById('hero-time-display').textContent = timeString;
+        }
+
+        // === 記帳邏輯 (Apps Script) ===
+        function fetchExpenses() {
+            document.getElementById('total-spent-twd').textContent = '更新中...';
+            
+            fetch(SCRIPT_URL)
+                .then(r => r.json())
+                .then(data => {
+                    renderExpenses(data);
+                    updateSummary(data);
+                })
+                .catch(e => {
+                    console.error(e);
+                    document.getElementById('expenseList').innerHTML = '<li style="color:red">連線失敗，請檢查 Script 網址</li>';
+                });
+        }
+
+        function renderExpenses(data) {
+            const list = document.getElementById('expenseList');
+            list.innerHTML = '';
+            if(!data || data.length === 0) { list.innerHTML = '<li>無資料</li>'; return; }
+            
+            data.slice().reverse().forEach(item => {
+                const li = document.createElement('li');
+                let dateStr = 'N/A';
+                if(item.timestamp) {
+                    const d = new Date(item.timestamp);
+                    dateStr = `${d.getMonth()+1}/${d.getDate()}`;
+                }
+                
+                li.innerHTML = `
+                    <span class="time">${dateStr}</span> 
+                    [${item.user}] ${item.desc}: ¥${item.jpy}
+                    <span class="delete-btn" onclick="handleExpense('delete', ${item.row})">刪除</span>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        function updateSummary(data) {
+            let jpy = 0, twd = 0;
+            data.forEach(d => { jpy += d.jpy; twd += d.twd; });
+            
+            const budget = parseFloat(localStorage.getItem('totalBudgetTWD') || 0);
+            document.getElementById('total-spent-jpy').textContent = `¥${jpy.toLocaleString()}`;
+            document.getElementById('total-spent-twd').textContent = `NT$ ${Math.round(twd).toLocaleString()}`;
+            
+            const remaining = budget - twd;
+            const el = document.getElementById('remaining-twd');
+            el.textContent = `NT$ ${Math.round(remaining).toLocaleString()}`;
+            el.style.color = remaining < 0 ? '#D83A56' : '#79A37B';
+        }
+
+        function handleExpense(action, rowId) {
+            const btn = document.getElementById('add-btn');
+            let payload = { action: action };
+            
+            if(action === 'add') {
+                const user = document.getElementById('expenseUser').value;
+                const desc = document.getElementById('expenseDesc').value;
+                const jpy = parseFloat(document.getElementById('expenseAmount').value);
+                const rate = parseFloat(document.getElementById('exchangeRate').value);
+                if(!user || !desc || isNaN(jpy)) { alert('請填寫完整'); return; }
+                
+                payload.user = user;
+                payload.desc = desc;
+                payload.jpy = jpy;
+                payload.twd = Math.round(jpy * rate);
+                
+                btn.textContent = '傳送中...';
+                btn.disabled = true;
+            } else if (action === 'delete') {
+                if(!confirm('確定要刪除這筆資料嗎？')) return;
+                payload.row = rowId;
+            }
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(() => {
+                if(action === 'add') {
+                    alert('已新增！');
+                    document.getElementById('expenseDesc').value = '';
+                    document.getElementById('expenseAmount').value = '';
+                    btn.textContent = '記錄支出';
+                    btn.disabled = false;
+                } else {
+                    alert('已刪除請求 (請稍候更新)');
+                }
+                setTimeout(fetchExpenses, 2000); 
+            })
+            .catch(err => {
+                alert('發生錯誤');
+                console.error(err);
+                if(btn) btn.disabled = false;
+            });
+        }
+
+        function saveSettings() {
+            localStorage.setItem('totalBudgetTWD', document.getElementById('totalBudgetTWD').value);
+            localStorage.setItem('exchangeRate', document.getElementById('exchangeRate').value);
+            localStorage.setItem('expenseUser', document.getElementById('expenseUser').value);
+            document.getElementById('budget-twd-display').textContent = `NT$ ${parseFloat(document.getElementById('totalBudgetTWD').value).toLocaleString()}`;
+            fetchExpenses();
+            alert('設定已儲存');
+        }
+
+        function loadData() {
+            document.getElementById('totalBudgetTWD').value = localStorage.getItem('totalBudgetTWD') || 0;
+            document.getElementById('exchangeRate').value = localStorage.getItem('exchangeRate') || 0.215;
+            document.getElementById('expenseUser').value = localStorage.getItem('expenseUser') || '';
+            document.getElementById('budget-twd-display').textContent = `NT$ ${parseFloat(document.getElementById('totalBudgetTWD').value).toLocaleString()}`;
+            
+            if(SCRIPT_URL.includes('http')) fetchExpenses();
+        }
+
+        function updateCountdown() {
+            if(document.getElementById('info').style.display === 'block' || document.getElementById('budget').style.display === 'block') return;
+            const targetStr = document.getElementById('countdown-timer').dataset.targetTime;
+            if(!targetStr) return;
+            const target = new Date(targetStr).getTime();
+            const now = new Date().getTime();
+            const dist = target - now;
+            if (dist < 0) { document.getElementById('countdown-timer').textContent = "進行中"; return; }
+            const d = Math.floor(dist / 86400000);
+            const h = Math.floor((dist % 86400000) / 3600000);
+            const m = Math.floor((dist % 3600000) / 60000);
+            document.getElementById('countdown-timer').textContent = `倒數: ${d}天 ${h}時 ${m}分`;
+        }
+
+        window.addEventListener('load', () => {
+            loadData();
+            
+            document.querySelectorAll('.task-list input').forEach(box => {
+                box.checked = localStorage.getItem(box.id) === 'true';
+                box.addEventListener('change', () => localStorage.setItem(box.id, box.checked));
+            });
+
+            const startBtn = document.querySelector(`.day-tab-box[data-day-index="1"]`);
+            if(startBtn) showDay('day-12-6', 1, startBtn);
+            
+            setInterval(updateCountdown, 60000);
+            setInterval(updateJapanClock, 1000); // 啟動日本時鐘
+            updateJapanClock();
+            
+            // Weather Widget
+            var s = document.createElement('script'); 
+            s.src = 'https://weatherwidget.io/js/widget.min.js';
+            document.body.appendChild(s);
+        });
+        
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('/service-worker.js');
+    </script>
+</body>
+</html>
